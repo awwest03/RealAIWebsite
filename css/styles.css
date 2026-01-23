@@ -345,6 +345,17 @@ nav {
     letter-spacing: -0.02em;
 }
 
+.highlight-letter {
+    font-weight: 500; /* Medium weight - between normal (400) and bold (700) */
+}
+
+.highlight-underline {
+    text-decoration: underline;
+    text-decoration-color: var(--sky-blue);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+}
+
 .section-intro {
     font-size: 1.15rem;
     color: var(--text-secondary);

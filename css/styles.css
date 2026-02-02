@@ -730,6 +730,7 @@ footer {
 @media (max-width: 1024px) {
     .hero {
         flex-direction: column;
+        padding-top: 80px; /* Account for fixed header */
     }
 
     .hero-animation {
@@ -801,6 +802,7 @@ footer {
 
     .hero {
         flex-direction: column;
+        padding-top: 70px; /* Account for fixed header */
     }
 
     .hero-animation {

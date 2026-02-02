@@ -5,7 +5,7 @@
 
 // ============================================
 // Morphing Binary Animation
-// 0s and 1s that morph between shapes: Grid → Pregnant Woman → Kidney → Galaxy → REAL AI
+// 0s and 1s that morph between shapes: Grid → Neuron → Kidneys → Galaxy → REAL AI
 // ============================================
 class MorphingBinary {
     constructor(canvas) {
@@ -14,7 +14,7 @@ class MorphingBinary {
         this.particles = [];
         this.particleCount = 400;
         this.currentShape = 0;
-        this.shapes = ['grid', 'pregnant', 'kidney', 'galaxy', 'text'];
+        this.shapes = ['grid', 'neuron', 'kidney', 'galaxy', 'text'];
         this.transitionProgress = 0;
         this.isFirstGrid = true;  // Track if we're in the initial grid phase
 
@@ -103,125 +103,135 @@ class MorphingBinary {
                 }
                 break;
 
-            case 'pregnant':
-                // Pregnant woman silhouette - side profile facing right
-                // Outline points for the silhouette (normalized coordinates)
-                const outlinePoints = [];
-                const sc = this.scale * 0.9;
-                const ox = this.centerX - sc * 0.1; // Offset to center
-                const oy = this.centerY;
+            case 'neuron':
+                // Neuron shape: cell body (soma), dendrites, and axon
+                const neuronPoints = [];
+                const nsc = this.scale * 0.9;
+                const ncx = this.centerX;
+                const ncy = this.centerY;
 
-                // Head (circle at top)
-                const headRadius = sc * 0.18;
-                const headCenterX = ox + sc * 0.05;
-                const headCenterY = oy - sc * 0.75;
-                for (let a = 0; a < Math.PI * 2; a += 0.15) {
-                    outlinePoints.push({
-                        x: headCenterX + Math.cos(a) * headRadius,
-                        y: headCenterY + Math.sin(a) * headRadius * 1.1
+                // Cell body (soma) - oval shape, slightly left of center
+                const somaX = ncx - nsc * 0.1;
+                const somaY = ncy;
+                const somaRadiusX = nsc * 0.18;
+                const somaRadiusY = nsc * 0.22;
+
+                // Soma outline
+                for (let a = 0; a < Math.PI * 2; a += 0.1) {
+                    neuronPoints.push({
+                        x: somaX + Math.cos(a) * somaRadiusX,
+                        y: somaY + Math.sin(a) * somaRadiusY
                     });
                 }
 
-                // Hair bun at back of head
-                const bunRadius = sc * 0.12;
-                const bunCenterX = headCenterX - headRadius * 0.7;
-                const bunCenterY = headCenterY - headRadius * 0.3;
+                // Nucleus inside soma
+                const nucleusRadius = nsc * 0.08;
                 for (let a = 0; a < Math.PI * 2; a += 0.2) {
-                    outlinePoints.push({
-                        x: bunCenterX + Math.cos(a) * bunRadius,
-                        y: bunCenterY + Math.sin(a) * bunRadius
+                    neuronPoints.push({
+                        x: somaX + Math.cos(a) * nucleusRadius,
+                        y: somaY + Math.sin(a) * nucleusRadius
                     });
                 }
 
-                // Neck
-                for (let t = 0; t <= 1; t += 0.1) {
-                    outlinePoints.push({
-                        x: ox + sc * 0.08,
-                        y: oy - sc * 0.55 + t * sc * 0.1
+                // Dendrites - branching from left side of soma
+                const dendriteBranches = [
+                    { angle: Math.PI * 0.85, length: 0.5, branches: 3 },
+                    { angle: Math.PI * 1.0, length: 0.55, branches: 4 },
+                    { angle: Math.PI * 1.15, length: 0.45, branches: 3 },
+                    { angle: Math.PI * 0.7, length: 0.4, branches: 2 },
+                    { angle: Math.PI * 1.3, length: 0.4, branches: 2 }
+                ];
+
+                dendriteBranches.forEach(branch => {
+                    const startX = somaX + Math.cos(branch.angle) * somaRadiusX;
+                    const startY = somaY + Math.sin(branch.angle) * somaRadiusY;
+
+                    // Main dendrite trunk
+                    for (let t = 0; t <= 1; t += 0.05) {
+                        const x = startX + Math.cos(branch.angle) * nsc * branch.length * t;
+                        const y = startY + Math.sin(branch.angle) * nsc * branch.length * t;
+                        neuronPoints.push({ x, y });
+                    }
+
+                    // Sub-branches
+                    for (let b = 0; b < branch.branches; b++) {
+                        const branchStart = 0.3 + (b / branch.branches) * 0.6;
+                        const branchAngle = branch.angle + (Math.random() - 0.5) * 0.8;
+                        const branchLen = 0.15 + Math.random() * 0.1;
+
+                        const bsx = startX + Math.cos(branch.angle) * nsc * branch.length * branchStart;
+                        const bsy = startY + Math.sin(branch.angle) * nsc * branch.length * branchStart;
+
+                        for (let t = 0; t <= 1; t += 0.1) {
+                            neuronPoints.push({
+                                x: bsx + Math.cos(branchAngle) * nsc * branchLen * t,
+                                y: bsy + Math.sin(branchAngle) * nsc * branchLen * t
+                            });
+                        }
+                    }
+                });
+
+                // Axon - long projection to the right
+                const axonStartX = somaX + somaRadiusX;
+                const axonStartY = somaY;
+
+                // Axon hillock (slight bulge where axon meets soma)
+                for (let a = -0.3; a <= 0.3; a += 0.1) {
+                    neuronPoints.push({
+                        x: axonStartX + nsc * 0.03,
+                        y: axonStartY + a * nsc * 0.1
                     });
                 }
 
-                // Back line (from neck down)
-                for (let t = 0; t <= 1; t += 0.05) {
-                    const backCurve = Math.sin(t * Math.PI) * 0.08;
-                    outlinePoints.push({
-                        x: ox - sc * 0.15 - backCurve * sc,
-                        y: oy - sc * 0.45 + t * sc * 0.9
+                // Main axon - slight curve
+                for (let t = 0; t <= 1; t += 0.02) {
+                    const curve = Math.sin(t * Math.PI * 2) * 0.03;
+                    neuronPoints.push({
+                        x: axonStartX + t * nsc * 0.7,
+                        y: axonStartY + curve * nsc
                     });
                 }
 
-                // Front - chest area
-                for (let t = 0; t <= 1; t += 0.08) {
-                    const chestCurve = Math.sin(t * Math.PI) * 0.12;
-                    outlinePoints.push({
-                        x: ox + sc * 0.15 + chestCurve * sc,
-                        y: oy - sc * 0.45 + t * sc * 0.25
-                    });
-                }
+                // Axon terminals (branching at the end)
+                const axonEndX = axonStartX + nsc * 0.7;
+                const axonEndY = axonStartY;
+                const terminalAngles = [-0.4, -0.15, 0.1, 0.35, 0.5, -0.5];
 
-                // Pregnant belly - the prominent curve
-                for (let t = 0; t <= 1; t += 0.03) {
-                    const angle = -Math.PI * 0.3 + t * Math.PI * 1.1;
-                    const bellyRadius = sc * 0.4;
-                    const bellyCenterX = ox + sc * 0.1;
-                    const bellyCenterY = oy + sc * 0.05;
-                    outlinePoints.push({
-                        x: bellyCenterX + Math.cos(angle) * bellyRadius * 0.9,
-                        y: bellyCenterY + Math.sin(angle) * bellyRadius
-                    });
-                }
+                terminalAngles.forEach(ang => {
+                    for (let t = 0; t <= 1; t += 0.1) {
+                        neuronPoints.push({
+                            x: axonEndX + t * nsc * 0.15 * Math.cos(ang),
+                            y: axonEndY + t * nsc * 0.15 * Math.sin(ang) + t * nsc * 0.08
+                        });
+                    }
+                    // Terminal bulb
+                    const bulbX = axonEndX + nsc * 0.15 * Math.cos(ang);
+                    const bulbY = axonEndY + nsc * 0.15 * Math.sin(ang) + nsc * 0.08;
+                    for (let a = 0; a < Math.PI * 2; a += 0.4) {
+                        neuronPoints.push({
+                            x: bulbX + Math.cos(a) * nsc * 0.025,
+                            y: bulbY + Math.sin(a) * nsc * 0.025
+                        });
+                    }
+                });
 
-                // Lower body / legs (simplified)
-                for (let t = 0; t <= 1; t += 0.08) {
-                    // Front leg line
-                    outlinePoints.push({
-                        x: ox + sc * 0.1 - t * sc * 0.05,
-                        y: oy + sc * 0.4 + t * sc * 0.5
-                    });
-                    // Back leg line
-                    outlinePoints.push({
-                        x: ox - sc * 0.15 + t * sc * 0.02,
-                        y: oy + sc * 0.45 + t * sc * 0.45
-                    });
-                }
-
-                // Arms
-                // Back arm
-                for (let t = 0; t <= 1; t += 0.1) {
-                    outlinePoints.push({
-                        x: ox - sc * 0.2 - t * sc * 0.1,
-                        y: oy - sc * 0.35 + t * sc * 0.35
-                    });
-                }
-                // Front arm resting on belly
-                for (let t = 0; t <= 1; t += 0.1) {
-                    const armCurve = Math.sin(t * Math.PI) * 0.1;
-                    outlinePoints.push({
-                        x: ox + sc * 0.25 + t * sc * 0.15,
-                        y: oy - sc * 0.25 + t * sc * 0.2 + armCurve * sc
-                    });
-                }
-
-                // Fill particles along the outline and inside
+                // Distribute particles along neuron structure
                 for (let i = 0; i < count; i++) {
-                    if (i < count * 0.6) {
-                        // Place on outline with some thickness
-                        const pt = outlinePoints[i % outlinePoints.length];
-                        const offsetX = (Math.random() - 0.5) * sc * 0.08;
-                        const offsetY = (Math.random() - 0.5) * sc * 0.08;
+                    if (i < count * 0.7) {
+                        // Place on neuron outline
+                        const pt = neuronPoints[i % neuronPoints.length];
+                        const jitter = 0.02;
                         points.push({
-                            x: pt.x + offsetX,
-                            y: pt.y + offsetY
+                            x: pt.x + (Math.random() - 0.5) * nsc * jitter,
+                            y: pt.y + (Math.random() - 0.5) * nsc * jitter
                         });
                     } else {
-                        // Fill interior of belly area
+                        // Fill soma interior
                         const angle = Math.random() * Math.PI * 2;
-                        const r = Math.random() * sc * 0.35;
-                        const bellyCenterX = ox + sc * 0.1;
-                        const bellyCenterY = oy + sc * 0.05;
+                        const r = Math.random() * 0.85;
                         points.push({
-                            x: bellyCenterX + Math.cos(angle) * r * 0.8,
-                            y: bellyCenterY + Math.sin(angle) * r
+                            x: somaX + Math.cos(angle) * somaRadiusX * r,
+                            y: somaY + Math.sin(angle) * somaRadiusY * r
                         });
                     }
                 }

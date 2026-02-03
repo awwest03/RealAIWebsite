@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - REAL AI Lab</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <style>
+        .admin-dashboard {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .admin-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .admin-card:hover {
+            border-color: var(--sky-blue);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .admin-card h3 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .admin-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-intro {
+            background: #f7f8f9;
+            border-left: 3px solid var(--sky-blue);
+            border-radius: 0 8px 8px 0;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-intro p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="../../index.html" class="logo">REAL AI</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../people.html">People</a></li>
+                <li><a href="../publications.html">Publications</a></li>
+                <li><a href="../news.html">News</a></li>
+                <li><a href="../events.html">Events</a></li>
+                <li><a href="../give.html">Give</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Admin Dashboard</h1>
+            </div>
+        </section>
+
+        <div class="admin-dashboard">
+            <div class="admin-intro">
+                <p>Welcome to the REAL AI website admin dashboard. Use the tools below to create and edit content for the website. Each editor provides a live preview and generates JSON that can be added to the data files.</p>
+            </div>
+
+            <div class="admin-grid">
+                <a href="research.html" class="admin-card">
+                    <div class="icon">&#128300;</div>
+                    <h3>Research Highlights</h3>
+                    <p>Create and edit research highlight articles with markdown content and team information.</p>
+                </a>
+
+                <a href="people.html" class="admin-card">
+                    <div class="icon">&#128101;</div>
+                    <h3>People</h3>
+                    <p>Add new team members including directors, PhD students, postdocs, and advisors.</p>
+                </a>
+
+                <a href="news.html" class="admin-card">
+                    <div class="icon">&#128240;</div>
+                    <h3>News</h3>
+                    <p>Add news items about awards, publications, media coverage, and announcements.</p>
+                </a>
+
+                <a href="events.html" class="admin-card">
+                    <div class="icon">&#128197;</div>
+                    <h3>Events</h3>
+                    <p>Add seminars and talks with speaker information and scheduling details.</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo">REAL AI</span>
+                    <p>Reliable, Efficient, and Aligned AI</p>
+                </div>
+                <nav class="footer-nav">
+                    <a href="../news.html">News</a>
+                    <a href="../people.html">People</a>
+                    <a href="../publications.html">Publications</a>
+                    <a href="../events.html">Events</a>
+                    <a href="../give.html">Give</a>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 REAL AI, UC Santa Barbara. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

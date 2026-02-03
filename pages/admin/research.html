@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Article Editor - REAL AI Lab</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+    <style>
+        .admin-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .editor-panel, .preview-panel {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--sky-blue);
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--sky-blue);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .article-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .article-selector select {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background: white;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--sky-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4fa8d1;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--sky-blue);
+            color: var(--sky-blue);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        /* Team members section */
+        .team-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .team-member-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            align-items: center;
+        }
+
+        .team-member-row input {
+            padding: 0.6rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove:hover {
+            background: #c82333;
+        }
+
+        .btn-add-member {
+            background: #f8f9fa;
+            border: 1px dashed var(--border-light);
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-member:hover {
+            border-color: var(--sky-blue);
+            color: var(--sky-blue);
+        }
+
+        /* Action buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* EasyMDE customization */
+        .EasyMDEContainer {
+            margin-top: 0.5rem;
+        }
+
+        .EasyMDEContainer .CodeMirror {
+            border-radius: 0 0 6px 6px;
+            min-height: 300px;
+        }
+
+        .editor-toolbar {
+            border-radius: 6px 6px 0 0;
+        }
+
+        /* Preview panel styles - reuse from cosmology.html */
+        .preview-content {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .preview-content h2 {
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--sky-blue);
+        }
+
+        .preview-content h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .preview-content h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 1rem 0 0.5rem;
+        }
+
+        .preview-content p {
+            margin-bottom: 1rem;
+        }
+
+        .preview-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .preview-content em {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .preview-content th,
+        .preview-content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .preview-content th {
+            background: var(--primary-100);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .preview-content strong {
+            color: var(--text-primary);
+        }
+
+        .preview-hero {
+            background: #f7f8f9;
+            border-left: 3px solid #bcc3ca;
+            border-radius: 0 8px 8px 0;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-hero .title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .preview-hero .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .preview-hero .links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .preview-hero .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            background: var(--sky-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .preview-hero .links a.secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .preview-team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-team-member {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+        }
+
+        .preview-team-member .name {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .preview-team-member .affiliation {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Image upload styles */
+        .image-upload-group { margin-bottom: 1.25rem; }
+        .image-upload-label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-primary); font-size: 0.9rem; }
+        .image-upload-area {
+            border: 2px dashed var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fafafa;
+        }
+        .image-upload-area:hover { border-color: var(--sky-blue); background: #f0f7ff; }
+        .image-upload-area.has-image { padding: 0.5rem; border-style: solid; }
+        .image-upload-area img { max-width: 100%; max-height: 200px; border-radius: 6px; }
+        .image-upload-area input[type="file"] { display: none; }
+        .image-upload-hint { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; }
+        .image-upload-text { color: var(--text-secondary); font-size: 0.9rem; }
+        .image-upload-text strong { color: var(--sky-blue); }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #28a745;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background: #dc3545;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-link::before {
+            content: '\2190';
+        }
+
+        @media (max-width: 1024px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-panel {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .team-member-row {
+                grid-template-columns: 1fr;
+            }
+
+            .team-member-row .btn-remove {
+                justify-self: end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="../../index.html" class="logo">REAL AI</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../people.html">People</a></li>
+                <li><a href="../publications.html">Publications</a></li>
+                <li><a href="../news.html">News</a></li>
+                <li><a href="../events.html">Events</a></li>
+                <li><a href="../give.html">Give</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Research Article Editor</h1>
+            </div>
+        </section>
+
+        <div class="admin-container">
+            <div class="editor-panel">
+                <a href="index.html" class="back-link">Back to Dashboard</a>
+
+                <div id="githubStatus" class="github-status disconnected">
+                    <span>&#9888;</span>
+                    <span>Not connected to GitHub</span>
+                    <a onclick="showLoginModal()">Connect</a>
+                </div>
+
+                <h2 class="panel-title">Editor</h2>
+
+                <div class="article-selector">
+                    <select id="articleSelect">
+                        <option value="">-- New Article --</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="newArticle()">New Article</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="articleId">Article ID (URL slug)</label>
+                    <input type="text" id="articleId" placeholder="e.g., cosmology, neuroscience">
+                </div>
+
+                <div class="form-group">
+                    <label for="articleTitle">Title</label>
+                    <input type="text" id="articleTitle" placeholder="Article title">
+                </div>
+
+                <div class="form-group">
+                    <label for="articleHighlight">Highlight Text</label>
+                    <textarea id="articleHighlight" placeholder="Brief description of the research..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paperLink">Paper Link</label>
+                        <input type="url" id="paperLink" placeholder="https://arxiv.org/...">
+                    </div>
+                    <div class="form-group">
+                        <label for="githubLink">GitHub Link</label>
+                        <input type="url" id="githubLink" placeholder="https://github.com/...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactEmail">Contact Email</label>
+                    <input type="email" id="contactEmail" placeholder="email@ucsb.edu">
+                </div>
+
+                <div class="image-upload-group">
+                    <label class="image-upload-label">Hero Image</label>
+                    <div class="image-upload-area" id="heroUploadArea" onclick="document.getElementById('heroInput').click()">
+                        <input type="file" id="heroInput" accept="image/*">
+                        <div id="heroPreviewUpload" class="image-upload-text">
+                            <strong>Click to upload</strong> or drag and drop<br>
+                            <small>JPG, PNG, WebP (recommended: 1200x600)</small>
+                        </div>
+                    </div>
+                    <p class="image-upload-hint">Main hero image for the research article</p>
+                </div>
+
+                <div class="team-section">
+                    <label>Team Members</label>
+                    <div id="teamMembers">
+                        <!-- Team member rows will be added here -->
+                    </div>
+                    <button class="btn-add-member" onclick="addTeamMember()">+ Add Team Member</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="articleContent">Content (Markdown)</label>
+                    <textarea id="articleContent"></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="submitForReview()">Submit for Review</button>
+                    <button class="btn btn-secondary" onclick="copyJSON()">Copy JSON</button>
+                    <button class="btn btn-primary" onclick="previewFull()">Preview Full Page</button>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <h2 class="panel-title">Live Preview</h2>
+                <div id="previewContent">
+                    <div class="preview-hero">
+                        <p class="title" id="previewTitle">Article Title</p>
+                        <p class="subtitle" id="previewHighlight">Article highlight text will appear here...</p>
+                        <div class="links">
+                            <a href="#" id="previewPaperLink">Read Paper</a>
+                            <a href="#" class="secondary" id="previewGithubLink">GitHub</a>
+                        </div>
+                    </div>
+                    <div class="preview-content" id="previewMarkdown">
+                        <p>Start writing your markdown content in the editor...</p>
+                    </div>
+                    <h3 style="margin-top: 2rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--sky-blue);">Research Team</h3>
+                    <div class="preview-team" id="previewTeam">
+                        <!-- Team members preview -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast">JSON copied to clipboard!</div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo">REAL AI</span>
+                    <p>Reliable, Efficient, and Aligned AI</p>
+                </div>
+                <nav class="footer-nav">
+                    <a href="../news.html">News</a>
+                    <a href="../people.html">People</a>
+                    <a href="../publications.html">Publications</a>
+                    <a href="../events.html">Events</a>
+                    <a href="../give.html">Give</a>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 REAL AI, UC Santa Barbara. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/admin.js"></script>
+    <script>
+        let easyMDE;
+        let researchData = [];
+        let heroUploader = null;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize EasyMDE
+            easyMDE = new EasyMDE({
+                element: document.getElementById('articleContent'),
+                spellChecker: false,
+                placeholder: 'Write your markdown content here...',
+                toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'image', 'table', '|', 'preview', 'side-by-side', 'fullscreen', '|', 'guide'],
+                status: ['lines', 'words'],
+                minHeight: '300px'
+            });
+
+            // Update preview on content change
+            easyMDE.codemirror.on('change', updatePreview);
+
+            // Initialize hero image uploader
+            heroUploader = new ImageUploader('heroInput', 'heroPreviewUpload', {
+                maxWidth: 1200,
+                maxHeight: 800,
+                quality: 0.85
+            });
+
+            document.getElementById('heroInput').addEventListener('imageReady', () => {
+                document.getElementById('heroUploadArea').classList.add('has-image');
+                updatePreview();
+            });
+
+            // Load existing research data
+            await loadResearchData();
+
+            // Add event listeners for form fields
+            const fields = ['articleId', 'articleTitle', 'articleHighlight', 'paperLink', 'githubLink', 'contactEmail'];
+            fields.forEach(field => {
+                document.getElementById(field).addEventListener('input', updatePreview);
+            });
+
+            // Add initial team member row
+            addTeamMember();
+        });
+
+        async function loadResearchData() {
+            try {
+                const response = await fetch('../../data/research.json');
+                researchData = await response.json();
+                populateArticleSelector();
+            } catch (error) {
+                console.log('Could not load research.json:', error);
+            }
+        }
+
+        function populateArticleSelector() {
+            const select = document.getElementById('articleSelect');
+            select.innerHTML = '<option value="">-- New Article --</option>';
+            researchData.forEach(article => {
+                const option = document.createElement('option');
+                option.value = article.id;
+                option.textContent = article.title;
+                select.appendChild(option);
+            });
+
+            select.addEventListener('change', (e) => {
+                if (e.target.value) {
+                    loadArticle(e.target.value);
+                } else {
+                    newArticle();
+                }
+            });
+        }
+
+        function loadArticle(id) {
+            const article = researchData.find(a => a.id === id);
+            if (!article) return;
+
+            document.getElementById('articleId').value = article.id || '';
+            document.getElementById('articleTitle').value = article.title || '';
+            document.getElementById('articleHighlight').value = article.highlight || '';
+            document.getElementById('paperLink').value = article.paperLink || '';
+            document.getElementById('githubLink').value = article.githubLink || '';
+            document.getElementById('contactEmail').value = article.contactEmail || '';
+
+            // Clear hero image uploader (user must re-upload if editing)
+            if (heroUploader) {
+                heroUploader.clear();
+                document.getElementById('heroUploadArea').classList.remove('has-image');
+                document.getElementById('heroPreviewUpload').innerHTML = `
+                    <strong>Click to upload</strong> or drag and drop<br>
+                    <small>JPG, PNG, WebP (recommended: 1200x600)</small>
+                    ${article.heroImage ? `<br><small style="color: #666;">Current: ${article.heroImage}</small>` : ''}
+                `;
+            }
+
+            // Load team members
+            const teamContainer = document.getElementById('teamMembers');
+            teamContainer.innerHTML = '';
+            if (article.team && article.team.length > 0) {
+                article.team.forEach(member => {
+                    addTeamMember(member.name, member.affiliation);
+                });
+            } else {
+                addTeamMember();
+            }
+
+            // Load content
+            easyMDE.value(article.content || '');
+
+            updatePreview();
+        }
+
+        function newArticle() {
+            document.getElementById('articleSelect').value = '';
+            document.getElementById('articleId').value = '';
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleHighlight').value = '';
+            document.getElementById('paperLink').value = '';
+            document.getElementById('githubLink').value = '';
+            document.getElementById('contactEmail').value = '';
+
+            // Clear hero image uploader
+            if (heroUploader) {
+                heroUploader.clear();
+                document.getElementById('heroUploadArea').classList.remove('has-image');
+                document.getElementById('heroPreviewUpload').innerHTML = `
+                    <strong>Click to upload</strong> or drag and drop<br>
+                    <small>JPG, PNG, WebP (recommended: 1200x600)</small>
+                `;
+            }
+
+            const teamContainer = document.getElementById('teamMembers');
+            teamContainer.innerHTML = '';
+            addTeamMember();
+
+            easyMDE.value('');
+            updatePreview();
+        }
+
+        function addTeamMember(name = '', affiliation = '') {
+            const container = document.getElementById('teamMembers');
+            const row = document.createElement('div');
+            row.className = 'team-member-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Name" value="${name}" onchange="updatePreview()">
+                <input type="text" placeholder="Affiliation" value="${affiliation}" onchange="updatePreview()">
+                <button class="btn-remove" onclick="removeTeamMember(this)">&times;</button>
+            `;
+            container.appendChild(row);
+            updatePreview();
+        }
+
+        function removeTeamMember(btn) {
+            const row = btn.parentElement;
+            row.remove();
+            updatePreview();
+        }
+
+        function getTeamMembers() {
+            const rows = document.querySelectorAll('.team-member-row');
+            const members = [];
+            rows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const affiliation = inputs[1].value.trim();
+                if (name || affiliation) {
+                    members.push({ name, affiliation });
+                }
+            });
+            return members;
+        }
+
+        function updatePreview() {
+            const title = document.getElementById('articleTitle').value;
+            const highlight = document.getElementById('articleHighlight').value;
+            const paperLink = document.getElementById('paperLink').value;
+            const githubLink = document.getElementById('githubLink').value;
+            const content = easyMDE.value();
+
+            // Update hero section
+            document.getElementById('previewTitle').textContent = title || 'Article Title';
+            document.getElementById('previewHighlight').textContent = highlight || 'Article highlight text will appear here...';
+
+            const paperLinkEl = document.getElementById('previewPaperLink');
+            const githubLinkEl = document.getElementById('previewGithubLink');
+            paperLinkEl.href = paperLink || '#';
+            githubLinkEl.href = githubLink || '#';
+            paperLinkEl.style.display = paperLink ? 'inline-flex' : 'none';
+            githubLinkEl.style.display = githubLink ? 'inline-flex' : 'none';
+
+            // Update markdown content
+            if (content) {
+                document.getElementById('previewMarkdown').innerHTML = marked.parse(content);
+            } else {
+                document.getElementById('previewMarkdown').innerHTML = '<p>Start writing your markdown content in the editor...</p>';
+            }
+
+            // Update team preview
+            const team = getTeamMembers();
+            const teamPreview = document.getElementById('previewTeam');
+            if (team.length > 0) {
+                teamPreview.innerHTML = team.map(m => `
+                    <div class="preview-team-member">
+                        <p class="name">${m.name || 'Name'}</p>
+                        <p class="affiliation">${m.affiliation || 'Affiliation'}</p>
+                    </div>
+                `).join('');
+            } else {
+                teamPreview.innerHTML = '<p style="color: var(--text-secondary);">No team members added</p>';
+            }
+        }
+
+        function generateHeroFilename(articleId) {
+            return `${articleId}/hero.jpg`;
+        }
+
+        function getArticleJSON() {
+            const articleId = document.getElementById('articleId').value.trim();
+            const heroData = heroUploader ? heroUploader.getUploadData() : null;
+
+            const article = {
+                id: articleId,
+                title: document.getElementById('articleTitle').value.trim(),
+                highlight: document.getElementById('articleHighlight').value.trim(),
+                paperLink: document.getElementById('paperLink').value.trim(),
+                githubLink: document.getElementById('githubLink').value.trim(),
+                heroImage: heroData ? generateHeroFilename(articleId) : '',
+                contactEmail: document.getElementById('contactEmail').value.trim(),
+                team: getTeamMembers(),
+                content: easyMDE.value()
+            };
+            return { article, heroData };
+        }
+
+        function copyJSON() {
+            const { article } = getArticleJSON();
+            const json = JSON.stringify(article, null, 2);
+
+            navigator.clipboard.writeText(json).then(() => {
+                showToast('JSON copied to clipboard!');
+            }).catch(err => {
+                const textarea = document.createElement('textarea');
+                textarea.value = json;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('JSON copied to clipboard!');
+            });
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = isError ? 'toast error show' : 'toast show';
+            setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+
+        function previewFull() {
+            const { article } = getArticleJSON();
+            if (!article.id) {
+                alert('Please enter an Article ID first');
+                return;
+            }
+            sessionStorage.setItem('previewArticle', JSON.stringify(article));
+            window.open(`../research/index.html?preview=true`, '_blank');
+        }
+
+        async function submitForReview() {
+            const github = new GitHubAdmin();
+            if (!github.isAuthenticated()) { showLoginModal(); return; }
+
+            const { article, heroData } = getArticleJSON();
+            if (!article.id || !article.title) {
+                showToast('Please enter Article ID and Title', true);
+                return;
+            }
+
+            showSubmitModal();
+
+            try {
+                const validation = await github.validateToken();
+                if (!validation.valid) throw new Error('Invalid token. Please reconnect.');
+
+                await github.getDefaultBranch();
+
+                updateSubmitStep('branch', 'active');
+                const branchName = `content/add-research-${article.id}-${Date.now()}`;
+                await github.createBranch(branchName);
+                updateSubmitStep('branch', 'done');
+
+                updateSubmitStep('images', 'active');
+                if (heroData) {
+                    const imagePath = `assets/images/research/${generateHeroFilename(article.id)}`;
+                    await github.commitBinaryFile(branchName, imagePath, heroData.base64, `Add hero image for research: ${article.title}`);
+                    article.heroImage = generateHeroFilename(article.id);
+                }
+                updateSubmitStep('images', 'done');
+
+                updateSubmitStep('data', 'active');
+                const fileData = await github.getFileContent('data/research.json');
+                let currentData = [];
+                let fileSha = null;
+
+                if (fileData && fileData.content) {
+                    try {
+                        currentData = JSON.parse(fileData.content);
+                        fileSha = fileData.sha;
+                        if (!Array.isArray(currentData)) currentData = [];
+                    } catch (e) {
+                        console.warn('Could not parse research.json, starting fresh');
+                        currentData = [];
+                    }
+                }
+
+                // Check if article with same ID exists
+                const existingIdx = currentData.findIndex(a => a.id === article.id);
+                if (existingIdx >= 0) {
+                    currentData[existingIdx] = article;
+                } else {
+                    currentData.push(article);
+                }
+
+                await github.commitFile(branchName, 'data/research.json', JSON.stringify(currentData, null, 2), `Add research article: ${article.title}`, fileSha);
+                updateSubmitStep('data', 'done');
+
+                updateSubmitStep('pr', 'active');
+                const pr = await github.createPullRequest(
+                    branchName,
+                    `Add research: ${article.title}`,
+                    `## Summary\nAdding research highlight: **${article.title}**\n\n## Details\n- ID: ${article.id}\n- Team: ${article.team.map(t => t.name).join(', ')}\n${heroData ? '- Hero Image: Included' : '- Hero Image: Not provided'}\n\n---\n*Submitted via REAL AI Admin*`
+                );
+                updateSubmitStep('pr', 'done');
+
+                document.getElementById('submitResult').innerHTML = `
+                    <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <strong>Success!</strong><br>Pull request created.<br><br>
+                        <a href="${pr.html_url}" target="_blank" style="color: #155724; font-weight: 500;">View Pull Request &rarr;</a>
+                    </div>
+                `;
+                document.getElementById('submitModalFooter').style.display = 'flex';
+
+            } catch (error) {
+                console.error('Submit error:', error);
+                document.getElementById('submitResult').innerHTML = `
+                    <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+                document.getElementById('submitModalFooter').style.display = 'flex';
+                ['branch', 'images', 'data', 'pr'].forEach(step => {
+                    const el = document.getElementById(`step-${step}`);
+                    if (el && el.classList.contains('active')) updateSubmitStep(step, 'error');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

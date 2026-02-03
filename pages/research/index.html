@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research - REAL AI Lab</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <style>
+        .research-hero {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            background: #f7f8f9;
+            border-left: 3px solid #bcc3ca;
+            border-radius: 0 8px 8px 0;
+            padding: 2rem 2.5rem;
+        }
+
+        .research-hero .tagline {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .research-hero .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .research-hero .links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .research-hero .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--sky-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .research-hero .links a:hover {
+            background: #4fa8d1;
+        }
+
+        .research-hero .links a.secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+
+        .research-hero .links a.secondary:hover {
+            border-color: var(--sky-blue);
+            color: var(--sky-blue);
+        }
+
+        .hero-image {
+            max-width: 100%;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 600px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .research-content {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .research-content h2 {
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2.5rem 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--sky-blue);
+        }
+
+        .research-content h3 {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .research-content h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .research-content p {
+            margin-bottom: 1rem;
+        }
+
+        .research-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            display: block;
+        }
+
+        .research-content em {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: -1rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .research-content strong {
+            color: var(--text-primary);
+        }
+
+        .research-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .research-content th,
+        .research-content td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .research-content th {
+            background: var(--primary-100);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .research-content td {
+            color: var(--text-secondary);
+        }
+
+        .research-content ul,
+        .research-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .research-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .research-content blockquote {
+            border-left: 3px solid var(--sky-blue);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .research-content code {
+            background: var(--primary-100);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .research-content pre {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .research-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .team-section {
+            max-width: 900px;
+            margin: 3rem auto 0;
+        }
+
+        .team-section-title {
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--sky-blue);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.25rem;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 1.25rem;
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            border-color: var(--sky-blue);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .team-member .name {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .team-member .affiliation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-box {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-box p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .contact-box a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--sky-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: gap 0.2s ease;
+        }
+
+        .back-link:hover {
+            gap: 0.75rem;
+        }
+
+        .back-link::before {
+            content: '\2190';
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .error-message h2 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .error-message p {
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .research-hero {
+                padding: 1.5rem 1.25rem;
+                border-radius: 0 6px 6px 0;
+            }
+
+            .research-hero .tagline {
+                font-size: 1.3rem;
+            }
+
+            .research-content table {
+                font-size: 0.85rem;
+            }
+
+            .research-content th,
+            .research-content td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="../../index.html" class="logo">REAL AI</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../people.html">People</a></li>
+                <li><a href="../publications.html">Publications</a></li>
+                <li><a href="../news.html">News</a></li>
+                <li><a href="../events.html">Events</a></li>
+                <li><a href="../give.html">Give</a></li>
+            </ul>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Research Highlights</h1>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <a href="../../index.html#research" class="back-link">Back to Research</a>
+
+                <div id="articleContent" class="loading">
+                    Loading article...
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo">REAL AI</span>
+                    <p>Reliable, Efficient, and Aligned AI</p>
+                </div>
+                <nav class="footer-nav">
+                    <a href="../news.html">News</a>
+                    <a href="../people.html">People</a>
+                    <a href="../publications.html">Publications</a>
+                    <a href="../events.html">Events</a>
+                    <a href="../give.html">Give</a>
+                </nav>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 REAL AI, UC Santa Barbara. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id');
+            const isPreview = urlParams.get('preview') === 'true';
+
+            let article = null;
+
+            // Check if this is a preview from the admin page
+            if (isPreview) {
+                const previewData = sessionStorage.getItem('previewArticle');
+                if (previewData) {
+                    article = JSON.parse(previewData);
+                }
+            } else if (articleId) {
+                // Check if running from file:// protocol - redirect to static page
+                if (window.location.protocol === 'file:') {
+                    // Redirect to static page if it exists
+                    const staticPages = ['cosmology', 'neuroscience', 'diabetes'];
+                    if (staticPages.includes(articleId)) {
+                        window.location.href = `${articleId}.html`;
+                        return;
+                    }
+                }
+
+                // Load from research.json - try multiple paths for different hosting scenarios
+                const paths = [
+                    '../../data/research.json',
+                    '/data/research.json',
+                    '../../../data/research.json'
+                ];
+
+                let lastError = '';
+                for (const path of paths) {
+                    try {
+                        const response = await fetch(path);
+                        if (response.ok) {
+                            const articles = await response.json();
+                            article = articles.find(a => a.id === articleId);
+                            if (article) break;
+                        } else {
+                            lastError = `${path}: ${response.status}`;
+                        }
+                    } catch (error) {
+                        lastError = `${path}: ${error.message}`;
+                        console.log(`Could not load from ${path}:`, error.message);
+                    }
+                }
+            }
+
+            if (article) {
+                renderArticle(article);
+            } else if (!articleId) {
+                showArticleList();
+            } else {
+                showError(articleId ? `Looking for: ${articleId}` : '');
+            }
+        });
+
+        async function showArticleList() {
+            // If no article ID provided, show a list of all articles
+            const paths = ['../../data/research.json', '/data/research.json'];
+            let articles = [];
+
+            for (const path of paths) {
+                try {
+                    const response = await fetch(path);
+                    if (response.ok) {
+                        articles = await response.json();
+                        break;
+                    }
+                } catch (e) {}
+            }
+
+            if (articles.length > 0) {
+                let html = '<div class="research-content"><h2>Research Highlights</h2><ul>';
+                articles.forEach(a => {
+                    html += `<li><a href="?id=${encodeURIComponent(a.id)}">${escapeHtml(a.title)}</a></li>`;
+                });
+                html += '</ul></div>';
+                document.getElementById('articleContent').innerHTML = html;
+            } else {
+                showError();
+            }
+        }
+
+        function renderArticle(article) {
+            // Update page title
+            document.title = `${article.title} - REAL AI Lab`;
+
+            // Configure marked for image path resolution
+            const renderer = new marked.Renderer();
+            renderer.image = function(href, title, text) {
+                // Handle different argument formats (marked.js version compatibility)
+                // Newer versions pass an object: { href, title, text }
+                if (typeof href === 'object') {
+                    text = href.text || '';
+                    title = href.title || '';
+                    href = href.href || '';
+                }
+                // Handle image paths - prepend the research images directory
+                let imageSrc = href;
+                if (href && !href.startsWith('http') && !href.startsWith('/')) {
+                    imageSrc = `../../assets/images/research/${href}`;
+                }
+                const titleAttr = title ? ` title="${title}"` : '';
+                return `<img src="${imageSrc}" alt="${text || ''}"${titleAttr}>`;
+            };
+
+            marked.setOptions({
+                renderer: renderer,
+                breaks: true,
+                gfm: true
+            });
+
+            // Build the article HTML
+            let html = `
+                <div class="research-hero">
+                    <p class="tagline">${escapeHtml(article.title)}</p>
+                    <p class="subtitle">${escapeHtml(article.highlight)}</p>
+                    <div class="links">
+                        ${article.paperLink ? `<a href="${escapeHtml(article.paperLink)}" target="_blank">Read Paper</a>` : ''}
+                        ${article.githubLink ? `<a href="${escapeHtml(article.githubLink)}" target="_blank" class="secondary">GitHub</a>` : ''}
+                    </div>
+                </div>
+            `;
+
+            // Hero image
+            if (article.heroImage) {
+                const heroSrc = article.heroImage.startsWith('http')
+                    ? article.heroImage
+                    : `../../assets/images/research/${article.heroImage}`;
+                html += `
+                    <div class="hero-image">
+                        <img src="${escapeHtml(heroSrc)}" alt="${escapeHtml(article.title)}">
+                    </div>
+                `;
+            }
+
+            // Main content
+            if (article.content) {
+                html += `<div class="research-content">${marked.parse(article.content)}</div>`;
+            }
+
+            // Team section
+            if (article.team && article.team.length > 0) {
+                html += `
+                    <div class="team-section">
+                        <h2 class="team-section-title">Research Team</h2>
+                        <div class="team-grid">
+                            ${article.team.map(member => `
+                                <div class="team-member">
+                                    <p class="name">${escapeHtml(member.name)}</p>
+                                    <p class="affiliation">${escapeHtml(member.affiliation)}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Contact box
+            if (article.contactEmail) {
+                html += `
+                    <div class="contact-box">
+                        <p>Interested in this research? Contact us at <a href="mailto:${escapeHtml(article.contactEmail)}">${escapeHtml(article.contactEmail)}</a></p>
+                    </div>
+                `;
+            }
+
+            document.getElementById('articleContent').innerHTML = html;
+        }
+
+        function showError(debugInfo = '') {
+            const isFileProtocol = window.location.protocol === 'file:';
+            let errorMessage = '<p>The requested research article could not be found.</p>';
+
+            if (isFileProtocol) {
+                errorMessage = `
+                    <p><strong>Note:</strong> You're viewing this page directly from your file system.</p>
+                    <p>The dynamic loader requires a web server to fetch JSON data.</p>
+                    <p><strong>Options:</strong></p>
+                    <ul style="text-align: left; max-width: 500px; margin: 1rem auto;">
+                        <li>Run a local server: <code>python -m http.server 8000</code></li>
+                        <li>Or use the static pages: <a href="cosmology.html">Cosmology</a>, <a href="neuroscience.html">Neuroscience</a>, <a href="diabetes.html">Diabetes</a></li>
+                    </ul>
+                `;
+            }
+
+            document.getElementById('articleContent').innerHTML = `
+                <div class="error-message">
+                    <h2>Article Not Found</h2>
+                    ${errorMessage}
+                    ${debugInfo ? `<p style="font-size: 0.8rem; color: #999; margin-top: 1rem;">Debug: ${debugInfo}</p>` : ''}
+                    <p><a href="../../index.html#research" class="back-link">Return to Research</a></p>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

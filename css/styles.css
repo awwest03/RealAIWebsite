@@ -3,6 +3,9 @@
    Clean lines inspired by ARIA
    ============================================ */
 
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
 /* CSS Variables */
 :root {
     /* Primary Colors - Baby Blue / Sky Blue */
@@ -146,11 +149,12 @@ nav {
 }
 
 .logo {
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-primary);
     text-decoration: none;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
 }
 
 .nav-links {

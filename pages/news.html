@@ -90,6 +90,10 @@
             color: var(--text-secondary);
             margin-bottom: 1rem;
             line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .news-card .read-more {
@@ -213,17 +217,35 @@
             container.innerHTML = html;
         }
 
+        // Parse date string like "Nov 2025" to sortable value
+        function parseDateString(dateStr) {
+            const months = {
+                'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+                'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+            };
+            const parts = dateStr.split(' ');
+            const month = months[parts[0]] || 0;
+            const year = parseInt(parts[1]) || 2020;
+            return year * 12 + month;
+        }
+
+        // Sort news by date (newest first)
+        function sortNewsByDate(newsData) {
+            return newsData.sort((a, b) => parseDateString(b.date) - parseDateString(a.date));
+        }
+
         // Load news from JSON file (works on server) or use fallback data (for local file:// access)
         async function loadNews() {
             try {
                 const response = await fetch('../data/news.json');
                 if (!response.ok) throw new Error('Fetch failed');
                 const data = await response.json();
-                renderNews(data.news);
+                renderNews(sortNewsByDate(data.news));
             } catch (error) {
                 console.log('Fetch failed, using fallback data');
                 // Fallback data for local file access - keep in sync with data/news.json
                 const fallbackData = [
+                    {"title": "REAL AI Launches Its First AI Bootcamp for High School Students", "date": "Sep 2025", "content": "REAL AI successfully completed its inaugural three-week AI Bootcamp, engaging 20 high school students in hands-on learning and creative exploration of AI.", "link": "https://jeong-lab.notion.site/SST-2025-REAL-AI-Bootcamp-Learn-Create-and-Imagine-the-Future-268bbe33121c80f2b775eee99a86a4d4", "image": "real_ai_launches_its_first_ai__1770688945817.jpg"},
                     {"title": "AI-Driven FTD Research Featured in The Transmitter", "date": "Nov 2025", "content": "PhD student Louisa Cornelis uses explainable graph neural networks and LLM-assisted analysis to study frontotemporal degeneration, predicting cognitive decline from proteomics data.", "link": "https://www.thetransmitter.org/machine-learning/how-neuroscientists-are-using-ai/", "image": "ftd_research.png"},
                     {"title": "HerBrain: Digital Twin of the Maternal Brain Named TIME's Best Invention", "date": "Oct 2025", "content": "HerBrain uses machine learning to model weekly structural changes during pregnancy and postpartum, aiming for 2027 launch integration with pregnancy apps.", "link": "https://time.com/collections/best-inventions-2025/7318361/herbrain/", "image": "herbrain_time.jpg"},
                     {"title": "AI's Role in Education and the Future of Learning", "date": "Sep 2025", "content": "Abby Bertics explores how students use AI for essays and problem-solving while universities grapple with adaptation challenges.", "link": "https://www.economist.com/podcasts/2025/09/20/we-dont-need-no-ai-education", "image": "ai_education.jpg"},
@@ -234,7 +256,7 @@
                     {"title": "Ann S. Bowers Women's Brain Health Initiative Launches", "date": "Nov 2023", "content": "Prof. Miolane co-founded WBHI, leveraging AI to accelerate women's brain health discoveries.", "link": "https://gi.ece.ucsb.edu/news/ann-s-bowers-womens-brain-health-initiative-launches-san-jose-ca", "image": "wbhi_launch.jpg"},
                     {"title": "Geometric AI for Imaging Science Receives NSF CAREER Award", "date": "Oct 2023", "content": "Prof. Miolane's research developing Geometric AI methods to analyze shapes in scientific images receives NSF CAREER Award.", "link": "https://gi.ece.ucsb.edu/news/nina-miolane-receives-prestigious-nsf-career-award", "image": "miolane_career.jpg"}
                 ];
-                renderNews(fallbackData);
+                renderNews(sortNewsByDate(fallbackData));
             }
         }
 

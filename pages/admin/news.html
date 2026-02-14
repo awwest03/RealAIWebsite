@@ -491,9 +491,10 @@
 
                 updateSubmitStep('images', 'active');
                 if (uploadData) {
-                    const imagePath = `assets/images/news/${generateFilename(item.title)}`;
+                    const filename = generateFilename(item.title);  // Generate once and reuse
+                    const imagePath = `assets/images/news/${filename}`;
                     await github.commitBinaryFile(branchName, imagePath, uploadData.base64, `Add image for news: ${item.title}`);
-                    item.image = generateFilename(item.title);
+                    item.image = filename;
                 }
                 updateSubmitStep('images', 'done');
 

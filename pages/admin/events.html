@@ -499,9 +499,10 @@
 
                 updateSubmitStep('images', 'active');
                 if (uploadData) {
-                    const imagePath = `assets/images/events/${generateFilename(item.speaker)}`;
+                    const filename = generateFilename(item.speaker);  // Generate once and reuse
+                    const imagePath = `assets/images/events/${filename}`;
                     await github.commitBinaryFile(branchName, imagePath, uploadData.base64, `Add photo for speaker: ${item.speaker}`);
-                    item.image = generateFilename(item.speaker);
+                    item.image = filename;
                 }
                 updateSubmitStep('images', 'done');
 

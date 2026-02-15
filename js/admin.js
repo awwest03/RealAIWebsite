@@ -148,7 +148,13 @@ class GitHubAdmin {
 
         if (response.ok) {
             const data = await response.json();
-            const content = atob(data.content);
+            // Properly decode UTF-8 from Base64
+            const binary = atob(data.content);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            const content = new TextDecoder('utf-8').decode(bytes);
             return { content, sha: data.sha };
         }
 

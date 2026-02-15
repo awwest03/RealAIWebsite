@@ -342,8 +342,8 @@
 
     <script src="../js/main.js"></script>
     <script>
-        // Events data embedded for local file access
-        const eventsData = [
+        // Fallback events data for local file access
+        const fallbackEventsData = [
             {
                 "title": "Biologically Plausible Computing: Navigating Energy Landscapes",
                 "speaker": "Francesco Bullo",
@@ -547,17 +547,6 @@
         let currentMonth = currentDate.getMonth();
         let currentYear = currentDate.getFullYear();
 
-        // Get event dates as a Set for quick lookup
-        function getEventDates() {
-            const dates = new Set();
-            eventsData.forEach(event => {
-                dates.add(event.date);
-            });
-            return dates;
-        }
-
-        const eventDates = getEventDates();
-
         // Format date for display
         function formatDate(dateStr) {
             const date = new Date(dateStr + 'T00:00:00');
@@ -697,10 +686,35 @@
             container.innerHTML = html;
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        // Active events data (will be loaded from JSON or fallback)
+        let eventsData = [];
+        let eventDates = new Set();
+
+        // Load events from JSON file
+        async function loadEvents() {
+            try {
+                const response = await fetch('../data/events.json');
+                if (!response.ok) throw new Error('Fetch failed');
+                eventsData = await response.json();
+                console.log('Events loaded from JSON file');
+            } catch (error) {
+                console.log('Fetch failed, using fallback data:', error.message);
+                eventsData = fallbackEventsData;
+            }
+
+            // Update event dates for calendar
+            eventDates = new Set();
+            eventsData.forEach(event => {
+                eventDates.add(event.date);
+            });
+
             renderCalendar();
             renderEvents();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEvents();
 
             // Calendar navigation
             document.getElementById('prev-month').addEventListener('click', function() {

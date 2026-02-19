@@ -267,6 +267,12 @@
   ],
   "2026": [
     {
+      "title": "Unsupervised Cell Segmentation by Fast Gaussian Processes",
+      "authors": "Baracaldo, L., King, B., Yan, H., Lin, Y., Miolane, N., Gu, N.",
+      "venue": "The New England Journal of Statistics in Data Science 2026",
+      "image": "unsupervised_cell_segmentation_1771484702781.jpg"
+    },
+    {
       "title": "When Machine Learning Gets Personal: Evaluating Prediction and Explanation",
       "authors": "L Cornelis, G Bernardez, H Jeong, N Miolane",
       "venue": "ICLR 2026",

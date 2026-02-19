@@ -125,6 +125,11 @@
   ],
   "2024": [
     {
+      "title": "Automated Adversarial Discovery for Safety Classifiers",
+      "authors": "Y. Lal, P. Lahoti, A. Sinha, Y. Qin, A. Balashankar",
+      "venue": "TrustNLP at NAACL",
+      "image": ""
+    },
       "title": "A Minimalist Prompt for Zero-Shot Policy Learning",
       "authors": "M. Song, X. Wang, T. Biradar, Y. Qin and M. Chandraker.",
       "venue": "RSS 2024",

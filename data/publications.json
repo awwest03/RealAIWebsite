@@ -261,6 +261,12 @@
   ],
   "2026": [
     {
+      "title": "GraphUniverse: Enabling Systematic Evaluation of Inductive Generalization",
+      "authors": "Van Langendonck, L., Bernárdez, G., Miolane, N., Barlet-Ros, P.",
+      "venue": "ICLR 2026",
+      "image": "graphuniverse_enabling_systema_1771484641341.jpg"
+    },
+    {
       "title": "When Machine Learning Gets Personal: Evaluating Prediction and Explanation",
       "authors": "L Cornelis, G Bernardez, H Jeong, N Miolane",
       "venue": "ICLR 2026",

@@ -113,6 +113,12 @@
   ],
   "2024": [
     {
+      "title": "Automated Adversarial Discovery for Safety Classifiers",
+      "authors": "Y. Lal, P. Lahoti, A. Sinha, Y. Qin, A. Balashankar",
+      "venue": "TrustNLP at NAACL",
+      "image": ""
+    },
+    {
       "title": "The Selective G-Bispectrum and its Inversion: Applications to G-Invariant Networks",
       "authors": "S Mataigne, J Mathe, S Sanborn, C Hillar, N Miolane",
       "venue": "NeurIPS 2024",

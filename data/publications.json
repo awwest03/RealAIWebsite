@@ -1,6 +1,12 @@
 {
   "2022": [
     {
+      "title": "Investigating Ensemble Methods for Model Robustness Improvement of Text Classifiers",
+      "authors": "J. Zhao, X. Wang, Y. Qin, J. Chen, K. Chang",
+      "venue": "Findings of EMNLP 2022",
+      "image": ""
+    },
+    {
       "title": "Beyond Adult and COMPAS: Fair Multi-Class Prediction via Information Projection",
       "authors": "W Alghamdi, H Hsu, H Jeong, H Wang, P Michalak, S Asoodeh, F Calmon",
       "venue": "NeurIPS 2022",
@@ -260,11 +266,17 @@
     }
   ],
   "2026": [
-    {
+{
       "title": "GraphUniverse: Enabling Systematic Evaluation of Inductive Generalization",
       "authors": "Van Langendonck, L., Bernárdez, G., Miolane, N., Barlet-Ros, P.",
       "venue": "ICLR 2026",
       "image": "graphuniverse_enabling_systema_1771484641341.jpg"
+    },
+    {
+      "title": "Unsupervised Cell Segmentation by Fast Gaussian Processes",
+      "authors": "Baracaldo, L., King, B., Yan, H., Lin, Y., Miolane, N., Gu, N.",
+      "venue": "The New England Journal of Statistics in Data Science 2026",
+      "image": "unsupervised_cell_segmentation_1771484702781.jpg
     },
     {
       "title": "When Machine Learning Gets Personal: Evaluating Prediction and Explanation",
@@ -273,4 +285,3 @@
       "image": "when_machine_learning_gets_per_1771176579797.jpg"
     }
   ]
-}

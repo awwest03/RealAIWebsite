@@ -125,6 +125,11 @@
   ],
   "2024": [
     {
+      "title": "Creative and Context-Aware Translation of East Asian Idioms with GPT-4",
+      "authors": "K. Tang, P. Song, Y. Qin, X. Yan",
+      "venue": "Findings of EMNLP 2024",
+      "image": "creative_and_contextaware_tran_1771484281629.jpg"
+    },
       "title": "Automated Adversarial Discovery for Safety Classifiers",
       "authors": "Y. Lal, P. Lahoti, A. Sinha, Y. Qin, A. Balashankar",
       "venue": "TrustNLP at NAACL",
